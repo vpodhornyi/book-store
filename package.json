@@ -3,7 +3,9 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "setup": "npm install && npm run generate --workspace=@repo/database",
+    "setup": "npm install && npm run db:generate --workspace=@repo/database && npm run db:push --workspace=@repo/database",
+    "generate": "npm run db:generate --workspace=@repo/database",
+    "push": "npm run db:push --workspace=@repo/database",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
