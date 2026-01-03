@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
+    "setup": "npm install && npm run generate --workspace=@repo/database",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
