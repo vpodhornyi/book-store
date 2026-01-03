@@ -13,9 +13,16 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^db:generate"]
     }
   }
 }
