@@ -16,7 +16,8 @@ COPY --from=deps /repo /repo
 COPY . .
 
 # Prisma client (packages/database)
-RUN npm run --workspace=@repo/database db:generate
+RUN npm run db:generate --workspace=@repo/database
+RUN npm run db:push --workspace=@repo/database
 
 # Build Nest API
 RUN npm run --workspace=apps/api build
