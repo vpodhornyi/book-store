@@ -1,6 +1,6 @@
 {
   "name": "book-store",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "setup": "npm install && npm run db:generate --workspace=@repo/database && npm run db:push --workspace=@repo/database",
