@@ -16,8 +16,8 @@ COPY --from=deps /repo /repo
 COPY . .
 
 # Prisma client (packages/database)
+ENV DATABASE_URL="postgresql://user:pass@localhost:5432/db?schema=public"
 RUN npm run db:generate --workspace=@repo/database
-RUN npm run db:push --workspace=@repo/database
 
 # Build Nest API
 RUN npm run --workspace=apps/api build
