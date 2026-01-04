@@ -30,6 +30,7 @@ ENV NODE_ENV=production
 COPY --from=build /repo/apps/api/dist ./dist
 COPY --from=build /repo/apps/api/package.json ./package.json
 COPY --from=build /repo/node_modules ./node_modules
+COPY --from=build /repo/packages/database/prisma ./packages/database/prisma
 
 EXPOSE 3000
 CMD ["node", "dist/main.js"]
