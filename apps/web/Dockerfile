@@ -18,10 +18,9 @@ FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY --from=build /repo/apps/web/.next ./.next
-COPY --from=build /repo/apps/web/public ./public
-COPY --from=build /repo/apps/web/package.json ./package.json
-COPY --from=build /repo/node_modules ./node_modules
+COPY --from=build /repo/apps/web/.next/standalone ./
+COPY --from=build /repo/apps/web/.next/static ./apps/web/.next/static
+COPY --from=build /repo/apps/web/public ./apps/web/public
 
 EXPOSE 3000
-CMD ["npm", "run", "--workspace=apps/web", "start"]
+CMD ["node", "apps/web/server.js"]

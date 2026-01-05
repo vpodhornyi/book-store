@@ -1,0 +1,30 @@
+# VCS
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+
+# Dependencies
+node_modules
+
+# Build artifacts
+.next
+dist
+.turbo
+coverage
+
+# Env files (secrets)
+.env
+apps/**/.env
+packages/**/.env
+
+# Tests (optional)
+apps/**/test
+apps/**/tests
+
+# Logs
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
