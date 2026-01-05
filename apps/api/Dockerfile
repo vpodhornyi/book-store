@@ -35,6 +35,7 @@ ENV DATABASE_URL=$DATABASE_URL
 RUN npm run db:generate --workspace=@repo/database
 
 # Build Nest API
+RUN npm i -g @nestjs/cli@11
 RUN npm run --workspace=apps/api build
 
 # Keep only prod deps (in THIS pruned repo)
