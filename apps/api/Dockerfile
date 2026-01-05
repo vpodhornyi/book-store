@@ -7,7 +7,7 @@ RUN npm i -g turbo
 
 COPY . .
 # produces /repo/out with only needed workspaces + pruned lockfiles
-RUN turbo prune --scope=apps/api --docker
+RUN turbo prune --scope=api --docker
 
 
 # ===== deps (install deps for pruned repo) =====
