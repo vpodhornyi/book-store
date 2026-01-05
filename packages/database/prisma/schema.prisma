@@ -4,6 +4,12 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+/**
+ * - `db:migrate` — create a new migration (dev only)
+ * Usage: `npm run db:migrate -- --name add_orders`
+ * - `db:deploy` — apply existing migrations (prod/dev)
+ * Usage: `npm run db:deploy`
+ */
 generator client {
   provider = "prisma-client-js"
 }
