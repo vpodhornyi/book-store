@@ -3,13 +3,20 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// ─────────────────────────────────────────────────────────────
+// DATABASE & MIGRATIONS RULES
+//
+// 1. Schema changes are made ONLY by editing this file.
+// 2. New migrations are created locally using:
+//    `npx prisma migrate dev --name <migration_name>`
+// 3. NEVER run `migrate dev` in production.
+// 4. Production uses ONLY:
+//    `npx prisma migrate deploy`
+// 5. Database connection URL is provided via prisma.config.ts
+//    and DATABASE_URL environment variable.
+// 6. Migrations history is tracked in git (prisma/migrations).
+// ─────────────────────────────────────────────────────────────
 
-/**
- * - `db:migrate` — create a new migration (dev only)
- * Usage: `npm run db:migrate -- --name add_orders`
- * - `db:deploy` — apply existing migrations (prod/dev)
- * Usage: `npm run db:deploy`
- */
 generator client {
   provider = "prisma-client-js"
 }
