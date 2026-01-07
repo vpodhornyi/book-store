@@ -4,12 +4,19 @@ import {
   Get,
   Post,
   Patch,
+  Delete,
   UsePipes,
   Param,
   ParseIntPipe,
+  HttpCode,
 } from '@nestjs/common';
 
-import { ApiOkResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiTags,
+  ApiBody,
+  ApiNoContentResponse,
+} from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import {
   type BookResponse,
@@ -68,5 +75,14 @@ export class BooksController {
     body: UpdateBookRequest,
   ): Promise<BookResponse> {
     return this.booksService.update(id, body);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @ApiNoContentResponse({
+    description: 'Book deleted',
+  })
+  async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.booksService.delete(id);
   }
 }

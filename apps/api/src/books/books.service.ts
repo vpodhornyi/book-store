@@ -40,4 +40,8 @@ export class BooksService {
 
     return toBookResponse(book);
   }
+
+  async delete(id: number): Promise<void> {
+    await this.prisma.book.delete({ where: { id } });
+  }
 }
