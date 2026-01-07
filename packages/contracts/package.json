@@ -1,0 +1,17 @@
+{
+  "name": "@repo/contracts",
+  "version": "1.0.0",
+  "description": "zod contracts",
+  "license": "ISC",
+  "author": "viktor podhornyi",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.4.0",
+    "zod": "^4.3.5"
+  }
+}
