@@ -8,6 +8,8 @@ import {
 import type { Request, Response } from 'express';
 import { PinoLogger } from 'nestjs-pino';
 
+import { type ApiError } from '@repo/contracts';
+
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private readonly logger: PinoLogger) {}
@@ -63,14 +65,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    // Client response (no stack)
-    res.status(statusCode).json({
+    const body: ApiError = {
       requestId: req.requestId,
       statusCode,
       error: errorName,
       message,
       path: req.originalUrl ?? req.url,
       timestamp: new Date().toISOString(),
-    });
+    } satisfies ApiError;
+
+    // Client response (no stack)
+    res.status(statusCode).json(body);
   }
 }

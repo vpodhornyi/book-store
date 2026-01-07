@@ -1,4 +1,4 @@
-import { z, type input, type output } from "zod";
+import { z } from "zod";
 import {BaseEntityResponseSchema} from "../common/base.schema";
 
 export const BookResponseSchema = BaseEntityResponseSchema.extend({
@@ -41,7 +41,7 @@ export const UpdateBookRequestSchema = z.object({
     },
   });
 
-export type BookResponse = output<typeof BookResponseSchema>;
-export type CreateBookRequest = input<typeof CreateBookRequestSchema>;
-export type UpdateBookRequest = input<typeof UpdateBookRequestSchema>;
+export type BookResponse = z.output<typeof BookResponseSchema>;
+export type CreateBookRequest = z.input<typeof CreateBookRequestSchema>;
+export type UpdateBookRequest = z.input<typeof UpdateBookRequestSchema>;
 

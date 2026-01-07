@@ -16,6 +16,8 @@ import {
   ApiTags,
   ApiBody,
   ApiNoContentResponse,
+  ApiParam,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import {
@@ -48,6 +50,22 @@ export class BooksController {
     return this.booksService.findAll();
   }
 
+  @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiNotFoundResponse({
+    description: 'Book not found',
+    schema: { $ref: '#/components/schemas/ApiError' },
+  })
+  @ApiOkResponse({
+    description: 'Book',
+    schema: { $ref: '#/components/schemas/BookResponse' },
+  })
+  async getBookById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<BookResponse> {
+    return this.booksService.findById(id);
+  }
+
   @Post()
   @UsePipes(new ZodValidationPipe(CreateBookRequestSchema))
   @ApiBody({
@@ -78,6 +96,10 @@ export class BooksController {
   }
 
   @Delete(':id')
+  @ApiNotFoundResponse({
+    description: 'Book not found',
+    schema: { $ref: '#/components/schemas/ApiError' },
+  })
   @HttpCode(204)
   @ApiNoContentResponse({
     description: 'Book deleted',
