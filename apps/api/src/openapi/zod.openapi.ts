@@ -7,6 +7,7 @@ import {
   BookResponseSchema,
   CreateBookRequestSchema,
   UpdateBookRequestSchema,
+  ApiErrorSchema,
 } from '@repo/contracts';
 
 export function generateZodOpenApi() {
@@ -15,6 +16,7 @@ export function generateZodOpenApi() {
   registry.register('BookResponse', BookResponseSchema);
   registry.register('CreateBookRequest', CreateBookRequestSchema);
   registry.register('UpdateBookRequest', UpdateBookRequestSchema);
+  registry.register('ApiError', ApiErrorSchema);
 
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
