@@ -1,18 +1,11 @@
 @import "tailwindcss";
 
-@theme {
-  /* Цей рядок каже Tailwind: "Активуй dark-варіанти, коли знайдеш клас .dark" */
-  --variant-dark: .dark &;
-  
-  /* Додамо власні кольори для впевненості */
-  --color-deep-black: #000000;
-  --color-pure-white: #ffffff;
-}
+/* Використовуємо директиву з вашого прикладу для ручного перемикання */
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* Примусовий фікс для Next.js, якщо класи не підхоплюються автоматично */
-@utility dark-mode-fix {
-  :where(.dark) & {
-    background-color: black;
-    color: white;
-  }
+@theme {
+  /* Додаємо кольори, щоб класи gray-800 та gray-400 працювали */
+  --color-gray-800: #1f2937;
+  --color-gray-400: #9ca3af;
+  --color-gray-900: #111827;
 }

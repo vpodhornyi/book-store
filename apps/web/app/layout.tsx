@@ -1,23 +1,18 @@
-
 import "./globals.css";
+import { ThemeProvider } from "../components/theme-provider";
 
-export const metadata = {
-  title: "BookStore",
-  description: "An online bookstore where you can discover and buy books for every taste",
-};
-
-
-interface RootLayoutProps {
-  children: React.ReactNode;
+export interface RootLayoutProps{
+  children: React.ReactNode
 }
 
-export default function RootLayout({
-  children,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body >
-        {children}
+    <html lang="uk" suppressHydrationWarning>
+      <body>
+        {/* Атрибут "class" відповідає селектору .dark у CSS */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
