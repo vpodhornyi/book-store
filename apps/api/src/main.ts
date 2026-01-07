@@ -1,14 +1,20 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { generateZodOpenApi } from './openapi/zod.openapi';
 import { mergeSchemas } from './openapi/merge-schemas';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: process.env.NODE_ENV === 'production',
+  });
   app.setGlobalPrefix('api');
-
+  app.useLogger(app.get(Logger));
+  app.useGlobalFilters(app.get(HttpExceptionFilter));
   const config = new DocumentBuilder()
     .setTitle('Book store example')
     .setDescription('The book store API description')
