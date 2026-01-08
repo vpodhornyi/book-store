@@ -11,8 +11,6 @@ import {
   type BookResponse,
   type CreateBookRequest,
   type UpdateBookRequest,
-  CreateBookRequestSchema,
-  UpdateBookRequestSchema,
 } from '@repo/contracts';
 import {
   toBookResponse,
@@ -44,20 +42,27 @@ export class BooksService {
   }
 
   async create(dto: CreateBookRequest): Promise<BookResponse> {
-    const input: CreateBookRequest = CreateBookRequestSchema.parse(dto);
-    const book: Book = await this.prisma.book.create(toBookCreateData(input));
+    const book: Book = await this.prisma.book.create(toBookCreateData(dto));
     return toBookResponse(book);
   }
 
   async update(id: number, dto: UpdateBookRequest): Promise<BookResponse> {
-    const input = UpdateBookRequestSchema.parse(dto);
+    try {
+      const book: Book = await this.prisma.book.update({
+        where: { id },
+        ...toBookUpdateData(dto),
+      });
 
-    const book = await this.prisma.book.update({
-      where: { id },
-      ...toBookUpdateData(input),
-    });
-
-    return toBookResponse(book);
+      return toBookResponse(book);
+    } catch (e) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2025'
+      ) {
+        throw new NotFoundException(BOOK_NOT_FOUND_ERROR);
+      }
+      throw e;
+    }
   }
 
   async delete(id: number): Promise<void> {
