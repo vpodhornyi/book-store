@@ -34,9 +34,9 @@ packages/database
 
 1. Modify prisma/schema.prisma
 2. Create a migration locally:
-
+```
 npm run db:migrate -- --name add_orders
-
+```
 This will:
 - generate a new migration in prisma/migrations
 - apply it to your local database
