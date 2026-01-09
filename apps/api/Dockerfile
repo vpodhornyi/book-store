@@ -34,6 +34,9 @@ ENV DATABASE_URL=$DATABASE_URL
 # Prisma client (packages/database)
 RUN npm run db:generate --workspace=@repo/database
 
+# Build contracts first (if it has build script / dist types)
+RUN npm run --workspace=@repo/contracts build
+
 # Build Nest API
 RUN npm i -g @nestjs/cli@11
 RUN npm run --workspace=apps/api build
