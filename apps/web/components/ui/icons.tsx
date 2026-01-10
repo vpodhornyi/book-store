@@ -6,12 +6,12 @@ export const Logo = ({ className }: IconProps) => {
   return (
     <div className={`flex items-center gap-2 group ${className}`}>
       <svg
-        width="28"
-        height="24"
+        width="20"
+        height="18"
         viewBox="0 0 28 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="transition-colors duration-300"
+        className="transition-colors duration-300 md:h-6 md:w-6"
       >
         <path
           d="M13.75 4.75C13.75 3.68913 14.1714 2.67172 14.9216 1.92157C15.6717 1.17143 16.6891 0.75 17.75 0.75H25.75C26.0152 0.75 26.2696 0.855357 26.4571 1.04289C26.6446 1.23043 26.75 1.48478 26.75 1.75V17.75C26.75 18.0152 26.6446 18.2696 26.4571 18.4571C26.2696 18.6446 26.0152 18.75 25.75 18.75H17.75C16.6891 18.75 15.6717 19.1714 14.9216 19.9216C14.1714 20.6717 13.75 21.6891 13.75 22.75"
@@ -126,8 +126,8 @@ export const KorbIcon = ({ className }: IconProps) => (
 
 export const LinkedinIcon = ({ className }: IconProps) => (
   <svg
-    width="25"
-    height="25"
+    width="20"
+    height="20"
     viewBox="0 0 25 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -172,8 +172,8 @@ export const LinkedinIcon = ({ className }: IconProps) => (
 
 export const GitHubIcon = ({ className }: IconProps) => (
   <svg
-    width="24"
-    height="25"
+    width="19"
+    height="20"
     viewBox="0 0 24 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -219,8 +219,8 @@ export const GitHubIcon = ({ className }: IconProps) => (
 
 export const FigmaIcon = ({ className }: IconProps) => (
   <svg
-    width="19"
-    height="25"
+    width="15"
+    height="20"
     viewBox="0 0 19 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
