@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full   backdrop-blur dark:bg-gray-950/80">
-      <div className="container mx-auto flex items-center justify-between pt-15 pr-18.75 pb-17.5 pl-18.75">
+      <div className="container mx-auto flex items-center justify-between pt-15 pr-1.25 pb-17.5 pl  -1.25">
         <Link href={'/'}><Logo /></Link>
 
         <div className="flex items-center gap-4">

@@ -1,8 +1,8 @@
 "use client"
 
-export default function GlobalError() {
- 
+import React from "react";
 
+export default function GlobalError() {
   return (
   
       <div className="max-w-md bg-white dark:bg-gray-800 rounded-lg px-6 py-8 ring-1 shadow-xl ring-gray-900/5 transition-all">
