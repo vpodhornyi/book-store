@@ -41,6 +41,7 @@ async function main() {
     create: {
       email: 'test@example.com',
       name: 'Viktor',
+      password: '$2a$12$QDbLCfekNJajuKzdcbx7I.H4pUlf13d1qDCh3FJOQZQrHENyZsdMS',
     },
   });
 
