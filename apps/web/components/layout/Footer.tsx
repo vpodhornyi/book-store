@@ -1,10 +1,10 @@
 import { FigmaIcon, GitHubIcon, LinkedinIcon } from "../ui/icons";
 
 export default function Footer() {
-  const circleStyle = "flex items-center justify-center rounded-full border-2 border-gray-800 dark:border-gray-100 h-10 w-10 md:h-12 md:w-12 shrink-0 bg-white dark:bg-gray-950 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]";
+  const circleStyle = "flex items-center justify-center rounded-full border-2 border-gray-800 dark:border-gray-100 h-10 w-10 md:h-12 md:w-12 shrink-0 bg-white dark:bg-gray-950 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:text-blue-500 hover:border-blue-500";
 
   return (
-    <footer className="w-full backdrop-blur dark:bg-gray-950/80 border-t-2 border-dashed border-gray-200 dark:border-gray-700 pt-11 pb-11">
+    <footer className="w-full backdrop-blur dark:bg-gray-  border-t-2 border-dashed border-gray-200 dark:border-gray-700 pt-11 pb-11">
       <div className="container flex items-center md:justify-between text-[20px] flex-col md:flex-row gap-11.5">
         <div className="font-syne">BookStore Project</div>
         

@@ -4,7 +4,7 @@ interface IconProps {
 
 export const Logo = ({ className }: IconProps) => {
   return (
-    <div className={`flex items-center gap-2 group ${className}`}>
+    <div className={`flex items-center gap-2 group ${className} hover:text-blue-500`}>
       <svg
         width="20"
         height="18"
@@ -28,7 +28,6 @@ export const Logo = ({ className }: IconProps) => {
           strokeLinejoin="round"
         />
       </svg>
-
       <p className="font-unica text-[20px] leading-none uppercase tracking-tight transition-colors duration-300">
         BookStore
       </p>

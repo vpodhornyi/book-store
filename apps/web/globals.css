@@ -18,6 +18,12 @@
     @apply text-gray-100;
   }
 
+  a, 
+  button, 
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+
   svg {
     @apply shrink-0;
   }
