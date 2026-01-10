@@ -1,5 +1,6 @@
-import "./globals.css";
-import { ThemeProvider } from "../components/theme-provider";
+import { syne, unicaOne } from '../fonts';
+import "../globals.css";
+import { ThemeProvider } from "../providers/theme-provider";
 
 export interface RootLayoutProps{
   children: React.ReactNode
@@ -7,9 +8,8 @@ export interface RootLayoutProps{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="uk" suppressHydrationWarning>
+    <html lang="uk" suppressHydrationWarning className={`${syne.variable} ${unicaOne.variable}`}>
       <body>
-        {/* Атрибут "class" відповідає селектору .dark у CSS */}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
