@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-syne: var(--font-syne);
+  --font-unica: var(--font-unica);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-syne), ui-sans-serif, system-ui;
+
+    @apply text-gray-800 antialiased;
+  }
+
+  .dark {
+    @apply text-gray-100;
+  }
+
+  svg {
+    @apply shrink-0;
+  }
+}
