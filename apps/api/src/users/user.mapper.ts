@@ -11,8 +11,8 @@ export class UserMapper {
     const userResponse: UserResponse = {
       id: user.id,
       email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
     };
 
     if (user.name) {

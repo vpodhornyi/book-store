@@ -13,6 +13,7 @@ import {
 
 import {
   ApiBody,
+  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -20,11 +21,12 @@ import {
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import {
-  type CreateUserRequest,
+  CreateUserRequest,
   CreateUserRequestSchema,
   UpdateBookRequestSchema,
-  type UpdateUserRequest,
-  type UserResponse,
+  UpdateUserRequest,
+  UserResponse,
+  ApiError,
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
@@ -34,13 +36,7 @@ export class UsersController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(CreateUserRequestSchema))
-  @ApiBody({
-    schema: { $ref: '#/components/schemas/CreateUserRequest' },
-  })
-  @ApiOkResponse({
-    description: 'User',
-    schema: { $ref: '#/components/schemas/UserResponse' },
-  })
+  @ApiCreatedResponse({ type: UserResponse })
   async create(
     @Body() createUserRequest: CreateUserRequest,
   ): Promise<UserResponse> {
@@ -48,42 +44,23 @@ export class UsersController {
   }
 
   @Get()
-  @ApiOkResponse({
-    description: 'List of Users',
-    schema: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/UserResponse',
-      },
-    },
-  })
+  @ApiOkResponse({ type: [UserResponse] })
   async findAll(): Promise<UserResponse[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   @ApiParam({ name: 'id', type: Number })
-  @ApiNotFoundResponse({
-    description: 'User not found',
-    schema: { $ref: '#/components/schemas/ApiError' },
-  })
-  @ApiOkResponse({
-    description: 'User',
-    schema: { $ref: '#/components/schemas/UserResponse' },
-  })
+  @ApiOkResponse({ type: UserResponse })
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UserResponse> {
     return this.usersService.findById(+id);
   }
 
   @Patch(':id')
   @ApiParam({ name: 'id', type: Number })
-  @ApiBody({
-    schema: { $ref: '#/components/schemas/UpdateUserRequest' },
-  })
-  @ApiOkResponse({
-    description: 'User',
-    schema: { $ref: '#/components/schemas/UserResponse' },
-  })
+  @ApiBody({ type: UpdateUserRequest })
+  @ApiOkResponse({ type: UserResponse })
+  @ApiNotFoundResponse({ type: ApiError, description: 'User not found' })
   async update(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateBookRequestSchema))
@@ -94,15 +71,10 @@ export class UsersController {
 
   @Delete(':id')
   @ApiParam({ name: 'id', type: Number })
-  @ApiNotFoundResponse({
-    description: 'User not found',
-    schema: { $ref: '#/components/schemas/ApiError' },
-  })
   @HttpCode(204)
-  @ApiNoContentResponse({
-    description: 'User deleted',
-  })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  @ApiNoContentResponse({ description: 'User deleted' })
+  @ApiNotFoundResponse({ type: ApiError, description: 'User not found' })
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.remove(id);
   }
 }

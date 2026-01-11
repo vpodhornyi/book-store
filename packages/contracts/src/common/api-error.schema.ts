@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createZodDto } from 'nestjs-zod';
 
 export const ApiErrorSchema = z.object({
   requestId: z.string(),
@@ -9,4 +10,4 @@ export const ApiErrorSchema = z.object({
   timestamp: z.string(),
 });
 
-export type ApiError = z.output<typeof ApiErrorSchema>;
+export class ApiError extends createZodDto(ApiErrorSchema) {}

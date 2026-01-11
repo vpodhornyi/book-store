@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { BaseIdSchema } from '../common/base.schema';
+import { createZodDto } from 'nestjs-zod';
 
-export const UserResponseSchema = BaseIdSchema.extend({
+import { BaseEntityResponseSchema } from '../common/base.schema';
+
+export const UserResponseSchema = BaseEntityResponseSchema.extend({
   email: z.email(),
   name: z.string().min(3).optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 })
 
 export const CreateUserRequestSchema = z.object({
@@ -26,6 +26,6 @@ export const UpdateUserRequestSchema = z.object({
   password: z.string().min(8).max(72).optional(),
 });
 
-export type UserResponse = z.output<typeof UserResponseSchema>;
-export type CreateUserRequest = z.input<typeof CreateUserRequestSchema>;
-export type UpdateUserRequest = z.input<typeof UpdateUserRequestSchema>;
+export class UserResponse extends createZodDto(UserResponseSchema) {}
+export class CreateUserRequest extends createZodDto(CreateUserRequestSchema) {}
+export class UpdateUserRequest extends createZodDto(UpdateUserRequestSchema) {}
