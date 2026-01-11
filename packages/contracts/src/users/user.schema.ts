@@ -15,7 +15,7 @@ export const CreateUserRequestSchema = z.object({
 }).openapi({
   example: {
     email: 'test@mail.com',
-    password: '$2a$12$Y3kg/9AIHoB0NuiHFjpczelDcM7tU/X64uOaCTjW//F2rlnbwfSji',
+    password: '11112222',
     name: 'Alex',
   },
 })

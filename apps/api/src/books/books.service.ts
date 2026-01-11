@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Book } from '@prisma/client';
+import { Prisma, type Book } from '@prisma/client';
 import { PrismaErrorUtil } from '../common/util/PrismaErrorUtil';
 import { PrismaService } from '../prisma/prisma.service';
 import {
@@ -15,8 +15,6 @@ import {
 
 @Injectable()
 export class BooksService {
-  private readonly entityName: string = 'Book';
-
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<BookResponse[]> {
@@ -30,14 +28,15 @@ export class BooksService {
     });
 
     if (!book) {
-      throw PrismaErrorUtil.handleNotFound(this.entityName);
+      throw PrismaErrorUtil.handleNotFound(Prisma.ModelName.Book);
     }
 
     return toBookResponse(book);
   }
 
   async create(dto: CreateBookRequest): Promise<BookResponse> {
-    const book: Book = await this.prisma.book.create(toBookCreateData(dto));
+    const data: Prisma.BookCreateInput = toBookCreateData(dto);
+    const book: Book = await this.prisma.book.create({ data });
     return toBookResponse(book);
   }
 
@@ -50,7 +49,7 @@ export class BooksService {
 
       return toBookResponse(book);
     } catch (e) {
-      PrismaErrorUtil.handle(e, this.entityName);
+      PrismaErrorUtil.handle(e, Prisma.ModelName.Book);
     }
   }
 
@@ -58,7 +57,7 @@ export class BooksService {
     try {
       await this.prisma.book.delete({ where: { id } });
     } catch (e) {
-      PrismaErrorUtil.handle(e, this.entityName);
+      PrismaErrorUtil.handle(e, Prisma.ModelName.Book);
     }
   }
 }

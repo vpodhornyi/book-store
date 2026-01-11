@@ -1,4 +1,4 @@
-import type { Book } from '@prisma/client';
+import { Prisma, type Book } from '@prisma/client';
 import {
   BookResponse,
   BookResponseSchema,
@@ -6,11 +6,6 @@ import {
 } from '@repo/contracts';
 import { type UpdateBookRequest } from '@repo/contracts';
 
-type BookCreateData = {
-  data: CreateBookRequest & {
-    description: string | null;
-  };
-};
 type BookUpdateData = {
   data: {
     title?: string;
@@ -35,12 +30,12 @@ export function toBookResponse(book: Book): BookResponse {
   return BookResponseSchema.parse(dto);
 }
 
-export function toBookCreateData(dto: CreateBookRequest): BookCreateData {
+export function toBookCreateData(
+  dto: CreateBookRequest,
+): Prisma.BookCreateInput {
   return {
-    data: {
-      ...dto,
-      description: dto.description ?? null,
-    },
+    ...dto,
+    description: dto.description ?? null,
   };
 }
 

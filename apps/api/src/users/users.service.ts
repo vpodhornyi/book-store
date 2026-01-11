@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaErrorUtil } from '../common/util/PrismaErrorUtil';
-import type { User } from '@prisma/client';
+import { Prisma, type User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserMapper, UserUpdateData } from './user.mapper';
+import { UserMapper } from './user.mapper';
 import type {
   UserResponse,
   CreateUserRequest,
@@ -11,14 +11,11 @@ import type {
 
 @Injectable()
 export class UsersService {
-  private readonly entityName: string = 'User';
-
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateUserRequest): Promise<UserResponse> {
-    const user: User = await this.prisma.user.create(
-      UserMapper.toCreateData(dto),
-    );
+    const data: Prisma.UserCreateInput = await UserMapper.toCreateData(dto);
+    const user: User = await this.prisma.user.create({ data });
     return UserMapper.toResponse(user);
   }
 
@@ -33,7 +30,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw PrismaErrorUtil.handleNotFound(this.entityName);
+      throw PrismaErrorUtil.handleNotFound(Prisma.ModelName.User);
     }
 
     return UserMapper.toResponse(user);
@@ -41,15 +38,15 @@ export class UsersService {
 
   async update(id: number, dto: UpdateUserRequest): Promise<UserResponse> {
     try {
-      const updateData: UserUpdateData = await UserMapper.toUpdateData(dto);
+      const data: Prisma.UserUpdateInput = await UserMapper.toUpdateData(dto);
       const user: User = await this.prisma.user.update({
         where: { id },
-        ...updateData,
+        data,
       });
 
       return UserMapper.toResponse(user);
     } catch (e) {
-      PrismaErrorUtil.handle(e, this.entityName);
+      PrismaErrorUtil.handle(e, Prisma.ModelName.User);
     }
   }
 
@@ -57,7 +54,7 @@ export class UsersService {
     try {
       await this.prisma.user.delete({ where: { id } });
     } catch (e) {
-      PrismaErrorUtil.handle(e, this.entityName);
+      PrismaErrorUtil.handle(e, Prisma.ModelName.User);
     }
   }
 }
