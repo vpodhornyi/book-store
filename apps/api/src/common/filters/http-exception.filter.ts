@@ -39,6 +39,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     res.status(statusCode).json(body);
   }
+
   private getStatus(exception: unknown): number {
     if (exception instanceof HttpException) return exception.getStatus();
     if (exception instanceof Prisma.PrismaClientKnownRequestError) {
