@@ -4,8 +4,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ZodValidationPipe, cleanupOpenApiDoc } from 'nestjs-zod';
 
 import { AppModule } from './app.module';
-import { generateZodOpenApi } from './openapi/zod.openapi';
-import { mergeSchemas } from './openapi/merge-schemas';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { Logger } from 'nestjs-pino';
 
@@ -24,9 +22,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('bookstore')
     .build();
-  const zodOpenApi = generateZodOpenApi();
   const document = SwaggerModule.createDocument(app, config);
-  mergeSchemas(document, zodOpenApi.components?.schemas);
 
   cleanupOpenApiDoc(document);
 
