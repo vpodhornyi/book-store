@@ -18,6 +18,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
+  ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import {
@@ -30,13 +31,17 @@ import {
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
-@Controller('users')
+const API_TAG = 'users';
+
+@ApiTags(API_TAG)
+@Controller(API_TAG)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @UsePipes(new ZodValidationPipe(CreateUserRequestSchema))
   @ApiCreatedResponse({ type: UserResponse })
+  @ApiOkResponse({ type: UserResponse })
   async create(
     @Body() createUserRequest: CreateUserRequest,
   ): Promise<UserResponse> {
@@ -52,6 +57,7 @@ export class UsersController {
   @Get(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: UserResponse })
+  @ApiNotFoundResponse({ type: ApiError, description: 'User not found' })
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UserResponse> {
     return this.usersService.findById(+id);
   }

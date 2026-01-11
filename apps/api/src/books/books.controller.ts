@@ -18,14 +18,16 @@ import {
   ApiNoContentResponse,
   ApiParam,
   ApiNotFoundResponse,
+  ApiCreatedResponse,
 } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import {
-  type BookResponse,
-  type CreateBookRequest,
-  type UpdateBookRequest,
+  BookResponse,
+  CreateBookRequest,
+  UpdateBookRequest,
   CreateBookRequestSchema,
   UpdateBookRequestSchema,
+  ApiError,
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
@@ -38,41 +40,22 @@ export class BooksController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(CreateBookRequestSchema))
-  @ApiBody({
-    schema: { $ref: '#/components/schemas/CreateBookRequest' },
-  })
-  @ApiOkResponse({
-    description: 'Book',
-    schema: { $ref: '#/components/schemas/BookResponse' },
-  })
+  @ApiCreatedResponse({ type: BookResponse })
+  @ApiOkResponse({ type: BookResponse })
   async addBook(@Body() bookRequest: CreateBookRequest): Promise<BookResponse> {
     return this.booksService.create(bookRequest);
   }
 
   @Get()
-  @ApiOkResponse({
-    description: 'List of Books',
-    schema: {
-      type: 'array',
-      items: {
-        $ref: '#/components/schemas/BookResponse',
-      },
-    },
-  })
+  @ApiOkResponse({ type: [BookResponse] })
   async getAll(): Promise<BookResponse[]> {
     return this.booksService.findAll();
   }
 
   @Get(':id')
   @ApiParam({ name: 'id', type: Number })
-  @ApiNotFoundResponse({
-    description: 'Book not found',
-    schema: { $ref: '#/components/schemas/ApiError' },
-  })
-  @ApiOkResponse({
-    description: 'Book',
-    schema: { $ref: '#/components/schemas/BookResponse' },
-  })
+  @ApiOkResponse({ type: BookResponse })
+  @ApiNotFoundResponse({ type: ApiError, description: 'Book not found' })
   async getBookById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<BookResponse> {
@@ -80,13 +63,9 @@ export class BooksController {
   }
 
   @Patch(':id')
-  @ApiBody({
-    schema: { $ref: '#/components/schemas/UpdateBookRequest' },
-  })
-  @ApiOkResponse({
-    description: 'Book',
-    schema: { $ref: '#/components/schemas/BookResponse' },
-  })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: UpdateBookRequest })
+  @ApiOkResponse({ type: BookResponse })
   async updateBook(
     @Param('id', ParseIntPipe) id: number,
     @Body(new ZodValidationPipe(UpdateBookRequestSchema))
@@ -97,14 +76,9 @@ export class BooksController {
 
   @Delete(':id')
   @ApiParam({ name: 'id', type: Number })
-  @ApiNotFoundResponse({
-    description: 'Book not found',
-    schema: { $ref: '#/components/schemas/ApiError' },
-  })
+  @ApiNotFoundResponse({ type: ApiError, description: 'Book not found' })
   @HttpCode(204)
-  @ApiNoContentResponse({
-    description: 'Book deleted',
-  })
+  @ApiNoContentResponse({ description: 'Book deleted' })
   async deleteBook(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.booksService.delete(id);
   }
