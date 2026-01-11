@@ -1,26 +1,63 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaErrorUtil } from '../common/util/PrismaErrorUtil';
+import type { User } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { UserMapper, UserUpdateData } from './user.mapper';
+import type {
+  UserResponse,
+  CreateUserRequest,
+  UpdateUserRequest,
+} from '@repo/contracts';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  private readonly entityName: string = 'User';
+
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(dto: CreateUserRequest): Promise<UserResponse> {
+    const user: User = await this.prisma.user.create(
+      UserMapper.toCreateData(dto),
+    );
+    return UserMapper.toResponse(user);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<UserResponse[]> {
+    const users: User[] = await this.prisma.user.findMany();
+    return users.map((u: User): UserResponse => UserMapper.toResponse(u));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findById(id: number): Promise<UserResponse> {
+    const user: User | null = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw PrismaErrorUtil.handleNotFound(this.entityName);
+    }
+
+    return UserMapper.toResponse(user);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, dto: UpdateUserRequest): Promise<UserResponse> {
+    try {
+      const updateData: UserUpdateData = await UserMapper.toUpdateData(dto);
+      const user: User = await this.prisma.user.update({
+        where: { id },
+        ...updateData,
+      });
+
+      return UserMapper.toResponse(user);
+    } catch (e) {
+      PrismaErrorUtil.handle(e, this.entityName);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number): Promise<void> {
+    try {
+      await this.prisma.user.delete({ where: { id } });
+    } catch (e) {
+      PrismaErrorUtil.handle(e, this.entityName);
+    }
   }
 }
