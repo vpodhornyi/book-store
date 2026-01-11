@@ -23,10 +23,10 @@ import { UsersService } from './users.service';
 import {
   CreateUserRequest,
   CreateUserRequestSchema,
-  UpdateBookRequestSchema,
   UpdateUserRequest,
   UserResponse,
   ApiError,
+  UpdateUserRequestSchema,
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
@@ -62,8 +62,8 @@ export class UsersController {
   @ApiOkResponse({ type: UserResponse })
   @ApiNotFoundResponse({ type: ApiError, description: 'User not found' })
   async update(
-    @Param('id') id: string,
-    @Body(new ZodValidationPipe(UpdateBookRequestSchema))
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ZodValidationPipe(UpdateUserRequestSchema))
     body: UpdateUserRequest,
   ): Promise<UserResponse> {
     return this.usersService.update(+id, body);

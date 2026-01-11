@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, type Book } from '@prisma/client';
-import { PrismaErrorUtil } from '../common/util/PrismaErrorUtil';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   type BookResponse,
@@ -27,9 +26,7 @@ export class BooksService {
       where: { id },
     });
 
-    if (!book) {
-      throw PrismaErrorUtil.handleNotFound(Prisma.ModelName.Book);
-    }
+    if (!book) throw new NotFoundException();
 
     return toBookResponse(book);
   }
@@ -41,23 +38,15 @@ export class BooksService {
   }
 
   async update(id: number, dto: UpdateBookRequest): Promise<BookResponse> {
-    try {
-      const book: Book = await this.prisma.book.update({
-        where: { id },
-        ...toBookUpdateData(dto),
-      });
+    const book: Book = await this.prisma.book.update({
+      where: { id },
+      ...toBookUpdateData(dto),
+    });
 
-      return toBookResponse(book);
-    } catch (e) {
-      PrismaErrorUtil.handle(e, Prisma.ModelName.Book);
-    }
+    return toBookResponse(book);
   }
 
   async delete(id: number): Promise<void> {
-    try {
-      await this.prisma.book.delete({ where: { id } });
-    } catch (e) {
-      PrismaErrorUtil.handle(e, Prisma.ModelName.Book);
-    }
+    await this.prisma.book.delete({ where: { id } });
   }
 }

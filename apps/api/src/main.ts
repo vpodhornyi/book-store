@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ZodValidationPipe, cleanupOpenApiDoc } from 'nestjs-zod';
 
 import { AppModule } from './app.module';
 import { generateZodOpenApi } from './openapi/zod.openapi';
@@ -12,9 +13,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: process.env.NODE_ENV === 'production',
   });
+
   app.setGlobalPrefix('api');
   app.useLogger(app.get(Logger));
   app.useGlobalFilters(app.get(HttpExceptionFilter));
+  app.useGlobalPipes(new ZodValidationPipe());
   const config = new DocumentBuilder()
     .setTitle('Book store example')
     .setDescription('The book store API description')
@@ -24,6 +27,8 @@ async function bootstrap() {
   const zodOpenApi = generateZodOpenApi();
   const document = SwaggerModule.createDocument(app, config);
   mergeSchemas(document, zodOpenApi.components?.schemas);
+
+  cleanupOpenApiDoc(document);
 
   if (process.env.NODE_ENV !== 'production') {
     SwaggerModule.setup('api/docs', app, document);
