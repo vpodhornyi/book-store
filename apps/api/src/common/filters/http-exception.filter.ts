@@ -15,8 +15,7 @@ import { type ApiError } from '@repo/contracts';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private readonly logger: PinoLogger) {
-  }
+  constructor(private readonly logger: PinoLogger) {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
