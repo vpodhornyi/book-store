@@ -36,6 +36,19 @@ const API_TAG = 'books';
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
+  @Post()
+  @UsePipes(new ZodValidationPipe(CreateBookRequestSchema))
+  @ApiBody({
+    schema: { $ref: '#/components/schemas/CreateBookRequest' },
+  })
+  @ApiOkResponse({
+    description: 'Book',
+    schema: { $ref: '#/components/schemas/BookResponse' },
+  })
+  async addBook(@Body() bookRequest: CreateBookRequest): Promise<BookResponse> {
+    return this.booksService.create(bookRequest);
+  }
+
   @Get()
   @ApiOkResponse({
     description: 'List of Books',
@@ -66,19 +79,6 @@ export class BooksController {
     return this.booksService.findById(id);
   }
 
-  @Post()
-  @UsePipes(new ZodValidationPipe(CreateBookRequestSchema))
-  @ApiBody({
-    schema: { $ref: '#/components/schemas/CreateBookRequest' },
-  })
-  @ApiOkResponse({
-    description: 'Book',
-    schema: { $ref: '#/components/schemas/BookResponse' },
-  })
-  async addBook(@Body() bookRequest: CreateBookRequest): Promise<BookResponse> {
-    return this.booksService.create(bookRequest);
-  }
-
   @Patch(':id')
   @ApiBody({
     schema: { $ref: '#/components/schemas/UpdateBookRequest' },
@@ -96,6 +96,7 @@ export class BooksController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
   @ApiNotFoundResponse({
     description: 'Book not found',
     schema: { $ref: '#/components/schemas/ApiError' },

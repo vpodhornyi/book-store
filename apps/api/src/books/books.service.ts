@@ -1,11 +1,6 @@
-import { Prisma } from '@prisma/client';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Book } from '@prisma/client';
-
+import { PrismaErrorUtil } from '../common/util/PrismaErrorUtil';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   type BookResponse,
@@ -18,10 +13,10 @@ import {
   toBookUpdateData,
 } from './book.mapper';
 
-const BOOK_NOT_FOUND_ERROR = 'Book not found';
-
 @Injectable()
 export class BooksService {
+  private readonly entityName: string = 'Book';
+
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<BookResponse[]> {
@@ -35,7 +30,7 @@ export class BooksService {
     });
 
     if (!book) {
-      throw new NotFoundException(BOOK_NOT_FOUND_ERROR);
+      throw PrismaErrorUtil.handleNotFound(this.entityName);
     }
 
     return toBookResponse(book);
@@ -55,13 +50,7 @@ export class BooksService {
 
       return toBookResponse(book);
     } catch (e) {
-      if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === 'P2025'
-      ) {
-        throw new NotFoundException(BOOK_NOT_FOUND_ERROR);
-      }
-      throw e;
+      PrismaErrorUtil.handle(e, this.entityName);
     }
   }
 
@@ -69,17 +58,7 @@ export class BooksService {
     try {
       await this.prisma.book.delete({ where: { id } });
     } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        switch (e.code) {
-          case 'P2025':
-            throw new NotFoundException(BOOK_NOT_FOUND_ERROR);
-          case 'P2003':
-            throw new ConflictException(
-              'Book is referenced by other entities and cannot be deleted',
-            );
-        }
-      }
-      throw e;
+      PrismaErrorUtil.handle(e, this.entityName);
     }
   }
 }

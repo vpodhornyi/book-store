@@ -10,6 +10,8 @@ import { BooksModule } from './books/books.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
     }),
     PrismaModule,
     BooksModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, HttpExceptionFilter],
