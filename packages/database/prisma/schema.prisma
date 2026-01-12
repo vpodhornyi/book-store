@@ -26,12 +26,24 @@ datasource db {
 }
 
 model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String?        @db.VarChar(255)
+  name          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String?  @db.VarChar(255)
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  tokenHash String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createAt  DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Book {
