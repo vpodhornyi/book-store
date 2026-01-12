@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ZodValidationPipe, cleanupOpenApiDoc } from 'nestjs-zod';
+import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -11,7 +12,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: process.env.NODE_ENV === 'production',
   });
-
+  app.use(cookieParser());
   app.setGlobalPrefix('api');
   app.useLogger(app.get(Logger));
   app.useGlobalFilters(app.get(HttpExceptionFilter));

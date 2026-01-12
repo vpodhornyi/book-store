@@ -9,7 +9,6 @@ export const LoginRequestSchema = z.object({
 
 export const AuthResponseSchema = z.object({
   accessToken: z.string(),
-  refreshToken: z.string(),
   user: UserResponseSchema,
 })
 

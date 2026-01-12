@@ -51,7 +51,7 @@ NEVER run migrate dev in production.
 ### Reset database & run seed (local development only)
 ```
 cd packages/database
-npx prisma db push --force-reset  //delete all data from database
+npx prisma migrate reset  //delete all data from database
 npx prisma db seed  //run seed script
 ```
 ### Applying existing migrations (dev / production)

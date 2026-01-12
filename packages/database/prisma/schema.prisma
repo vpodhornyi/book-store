@@ -37,11 +37,14 @@ model User {
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
+  jti       String   @unique
   tokenHash String   @unique
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ip        String?
   expiresAt DateTime
-  createAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId])
 }

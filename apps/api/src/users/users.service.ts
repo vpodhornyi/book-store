@@ -23,7 +23,7 @@ export class UsersService {
     return users.map((u: User): UserResponse => UserMapper.toResponse(u));
   }
 
-  async findById(id: number): Promise<UserResponse> {
+  async findByIdOrThrow(id: number): Promise<UserResponse> {
     const user: User | null = await this.prisma.user.findUnique({
       where: { id },
     });
@@ -31,6 +31,14 @@ export class UsersService {
     if (!user) throw new NotFoundException();
 
     return UserMapper.toResponse(user);
+  }
+
+  async findById(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { email } });
   }
 
   async update(id: number, dto: UpdateUserRequest): Promise<UserResponse> {
