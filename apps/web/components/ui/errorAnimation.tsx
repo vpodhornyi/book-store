@@ -9,11 +9,11 @@ export  const ErrorAnimation = ({ className }: ErrorAnimationProps) => {
   return (
     <div className={`flex items-center gap-2 group ${className} hover:text-blue-500`}>
      <Image
-    src={gif} // Шлях до файлу в папці public
+    src={gif} 
     alt="Loading..."
     width="329"
     height="329"
-    unoptimized // Обов'язково для збереження анімації
+    unoptimized 
     className={className}
   />
     </div>

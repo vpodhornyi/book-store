@@ -1,9 +1,7 @@
 import React from "react";
+import Hero from "../../components/sections/Hero";
 
-export interface HomeProps {
-  children: React.ReactNode;
-}
 
-export default function Home({ children }: HomeProps) {
-  return <div>{children}</div>;
+export default function Home() {
+  return <><Hero/></>;
 }

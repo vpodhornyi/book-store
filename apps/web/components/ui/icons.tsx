@@ -4,14 +4,16 @@ interface IconProps {
 
 export const Logo = ({ className }: IconProps) => {
   return (
-    <div className={`flex items-center gap-2 group ${className} hover:text-blue-500`}>
+    <div
+      className={`flex items-center gap-2 group ${className} hover:text-blue-500`}
+    >
       <svg
         width="20"
         height="18"
         viewBox="0 0 28 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="transition-colors duration-300 md:h-6 md:w-6"
+        className=" md:h-6 md:w-6"
       >
         <path
           d="M13.75 4.75C13.75 3.68913 14.1714 2.67172 14.9216 1.92157C15.6717 1.17143 16.6891 0.75 17.75 0.75H25.75C26.0152 0.75 26.2696 0.855357 26.4571 1.04289C26.6446 1.23043 26.75 1.48478 26.75 1.75V17.75C26.75 18.0152 26.6446 18.2696 26.4571 18.4571C26.2696 18.6446 26.0152 18.75 25.75 18.75H17.75C16.6891 18.75 15.6717 19.1714 14.9216 19.9216C14.1714 20.6717 13.75 21.6891 13.75 22.75"
@@ -28,7 +30,7 @@ export const Logo = ({ className }: IconProps) => {
           strokeLinejoin="round"
         />
       </svg>
-      <p className="font-unica text-[20px] leading-none uppercase tracking-tight transition-colors duration-300">
+      <p className="font-unica text-[20px] leading-none uppercase tracking-tight ">
         BookStore
       </p>
     </div>
@@ -255,6 +257,53 @@ export const FigmaIcon = ({ className }: IconProps) => (
     />
     <path
       d="M9.25 17.75V22C9.25 22.8406 9.00074 23.6623 8.53375 24.3612C8.06675 25.0601 7.40299 25.6048 6.62641 25.9265C5.84982 26.2482 4.99529 26.3323 4.17087 26.1683C3.34645 26.0043 2.58917 25.5996 1.9948 25.0052C1.40042 24.4108 0.995652 23.6536 0.831664 22.8291C0.667677 22.0047 0.751841 21.1502 1.07351 20.3736C1.39519 19.597 1.93992 18.9332 2.63883 18.4663C3.33774 17.9993 4.15943 17.75 5 17.75H9.25Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const BinocularIcon = ({ className }: IconProps) => (
+  <svg
+    width="24"
+    height="19"
+    viewBox="0 0 26 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M9.98077 5.82321H15.5192"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M24.4731 13.0117L19.4308 1.55399C18.9101 1.03891 18.2074 0.75 17.475 0.75C16.7426 0.75 16.0398 1.03891 15.5192 1.55399V14.5925"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M9.98076 14.5925V1.55399C9.46015 1.03891 8.75735 0.75 8.02499 0.75C7.29263 0.75 6.58984 1.03891 6.06922 1.55399L1.02692 13.0117"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M5.36538 19.2078C7.91439 19.2078 9.98077 17.1415 9.98077 14.5925C9.98077 12.0434 7.91439 9.97707 5.36538 9.97707C2.81638 9.97707 0.75 12.0434 0.75 14.5925C0.75 17.1415 2.81638 19.2078 5.36538 19.2078Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M20.1346 19.2078C22.6836 19.2078 24.75 17.1415 24.75 14.5925C24.75 12.0434 22.6836 9.97707 20.1346 9.97707C17.5856 9.97707 15.5192 12.0434 15.5192 14.5925C15.5192 17.1415 17.5856 19.2078 20.1346 19.2078Z"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
