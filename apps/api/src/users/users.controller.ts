@@ -17,7 +17,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
-  ApiTags,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import {
@@ -30,10 +29,7 @@ import {
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
-const API_TAG = 'users';
-
-@ApiTags(API_TAG)
-@Controller(API_TAG)
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

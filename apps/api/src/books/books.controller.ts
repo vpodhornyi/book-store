@@ -13,7 +13,6 @@ import {
 
 import {
   ApiOkResponse,
-  ApiTags,
   ApiBody,
   ApiNoContentResponse,
   ApiParam,
@@ -31,10 +30,7 @@ import {
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
-const API_TAG = 'books';
-
-@ApiTags(API_TAG)
-@Controller(API_TAG)
+@Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
