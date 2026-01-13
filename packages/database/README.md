@@ -37,12 +37,23 @@ packages/database
 ```
 npm run db:migrate -- --name add_orders
 ```
+or
+```aiignore
+cd packages/database
+npx prisma migrate dev --name yor_migration_name
+```
 This will:
 - generate a new migration in prisma/migrations
 - apply it to your local database
 
 NEVER run migrate dev in production.
 
+### Reset database & run seed (local development only)
+```
+cd packages/database
+npx prisma migrate reset  //delete all data from database
+npx prisma db seed  //run seed script
+```
 ### Applying existing migrations (dev / production)
 
 After pulling changes from the repository:
