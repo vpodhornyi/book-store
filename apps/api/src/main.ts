@@ -22,6 +22,8 @@ async function bootstrap() {
     .setDescription('The book store API description')
     .setVersion('1.0')
     .addTag('bookstore')
+    .addBearerAuth()
+    .addCookieAuth('refreshToken')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 

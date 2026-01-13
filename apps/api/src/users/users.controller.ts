@@ -13,7 +13,6 @@ import {
 
 import {
   ApiBody,
-  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -40,7 +39,6 @@ export class UsersController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(CreateUserRequestSchema))
-  @ApiCreatedResponse({ type: UserResponse })
   @ApiOkResponse({ type: UserResponse })
   async create(
     @Body() createUserRequest: CreateUserRequest,

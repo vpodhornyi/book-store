@@ -6,7 +6,7 @@ import {
   Req,
   UseGuards,
   Body,
-  Res,
+  Res, UsePipes,
 } from '@nestjs/common';
 import type { Response, Request } from 'express';
 
@@ -20,11 +20,11 @@ import {
 } from '@repo/contracts';
 import { AuthService } from './auth.service';
 import { SessionMeta } from '../types/session-meta.type';
+import { ApiOkResponse, ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {
-  }
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
@@ -33,8 +33,10 @@ export class AuthController {
   }
 
   @Post('register')
+  @UsePipes(new ZodValidationPipe(RegisterRequestSchema))
+  @ApiOkResponse({ type: AuthResponse })
   async register(
-    @Body(new ZodValidationPipe(RegisterRequestSchema)) body: RegisterRequest,
+    @Body() body: RegisterRequest,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<AuthResponse> {
@@ -49,8 +51,10 @@ export class AuthController {
   }
 
   @Post('login')
+  @UsePipes(new ZodValidationPipe(LoginRequestSchema))
+  @ApiOkResponse({ type: AuthResponse })
   async login(
-    @Body(new ZodValidationPipe(LoginRequestSchema)) body: LoginRequest,
+    @Body() body: LoginRequest,
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<AuthResponse> {
@@ -65,6 +69,8 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @ApiOkResponse({ type: AuthResponse })
+  @ApiCookieAuth('refreshToken')
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
@@ -83,6 +89,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
+  @ApiCookieAuth('refreshToken')
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
