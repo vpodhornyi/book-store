@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { PasswordUtil } from '../common/util/PasswordUtil';
 import { User } from '@prisma/client';
-import { LoginRequest, UserResponse } from '@repo/contracts';
+import { LoginRequest, RegisterRequest, UserResponse } from '@repo/contracts';
 import { UserMapper } from '../users/user.mapper';
 import { SessionMeta } from '../types/session-meta.type';
 import { UsersService } from '../users/users.service';
@@ -14,6 +14,35 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly tokenService: TokenService,
   ) {}
+
+  async register(
+    dto: RegisterRequest,
+    metaData: SessionMeta,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    user: UserResponse;
+  }> {
+    const existing: User | null = await this.userService.findByEmail(dto.email);
+
+    if (existing) throw new UnauthorizedException('Email already in use!');
+
+    const user: UserResponse = await this.userService.create({
+      email: dto.email,
+      password: dto.password,
+    });
+    const { accessToken, refreshToken } = await this.tokenService.issueTokens(
+      user.id,
+      user.email,
+      metaData,
+    );
+
+    return {
+      accessToken,
+      refreshToken,
+      user,
+    };
+  }
 
   async login(
     { email, password }: LoginRequest,
@@ -35,12 +64,15 @@ export class AuthService {
 
     if (!isValid) throw new UnauthorizedException('Password is not valid!');
 
-    const tokens: { accessToken: string; refreshToken: string } =
-      await this.tokenService.issueTokens(user.id, user.email, metaData);
+    const { accessToken, refreshToken } = await this.tokenService.issueTokens(
+      user.id,
+      user.email,
+      metaData,
+    );
 
     return {
-      accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken,
+      accessToken,
+      refreshToken,
       user: UserMapper.toResponse(user),
     };
   }

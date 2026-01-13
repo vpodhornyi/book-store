@@ -28,13 +28,23 @@ export class UsersService {
       where: { id },
     });
 
-    if (!user) throw new NotFoundException();
+    if (!user) throw new NotFoundException('User not found!');
 
     return UserMapper.toResponse(user);
   }
 
   async findById(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
+  }
+
+  async findByEmailOrThrow(email: string): Promise<UserResponse> {
+    const user: User | null = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) throw new NotFoundException('User not found!');
+
+    return UserMapper.toResponse(user);
   }
 
   async findByEmail(email: string): Promise<User | null> {
