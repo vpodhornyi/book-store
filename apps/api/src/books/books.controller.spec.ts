@@ -19,7 +19,7 @@ describe('BooksController', () => {
 
   const mockBooksService = {
     findAll: jest.fn(),
-    findById: jest.fn(),
+    findByIdOrThrow: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
@@ -45,17 +45,18 @@ describe('BooksController', () => {
   });
 
   describe('getAll', () => {
-    it('should return an array of books', async () => {
+    it('should return an array of books response', async () => {
       jest.spyOn(service, 'findAll').mockResolvedValue([mockBookResponse]);
       const result = await controller.getAll();
       expect(result).toEqual([mockBookResponse]);
     });
   });
 
-  describe('getBookById', () => {
+  describe('getById', () => {
     it('should return a book', async () => {
-      jest.spyOn(service, 'findById').mockResolvedValue(mockBookResponse);
-      const result = await controller.getBookById(1);
+      jest.spyOn(service, 'findByIdOrThrow').mockResolvedValue(mockBookResponse);
+      const result = await controller.getById(1);
+      expect(service.findByIdOrThrow).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockBookResponse);
     });
   });

@@ -21,14 +21,18 @@ export class BooksService {
     return books.map(toBookResponse);
   }
 
-  async findById(id: number): Promise<BookResponse> {
+  async findByIdOrThrow(id: number): Promise<BookResponse> {
     const book: Book | null = await this.prisma.book.findUnique({
       where: { id },
     });
 
-    if (!book) throw new NotFoundException();
+    if (!book) throw new NotFoundException('Book not found!');
 
     return toBookResponse(book);
+  }
+
+  async findById(id: number): Promise<Book | null> {
+    return this.prisma.book.findUnique({ where: { id } });
   }
 
   async create(dto: CreateBookRequest): Promise<BookResponse> {

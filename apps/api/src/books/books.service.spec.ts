@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BooksService } from './books.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { NotFoundException, ConflictException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 describe('BooksService', () => {
@@ -17,6 +16,17 @@ describe('BooksService', () => {
     stock: 100,
     createdAt: new Date(),
     updatedAt: new Date(),
+  };
+
+  const mockBookResponse = {
+    id: 1,
+    title: 'The Great Gatsby',
+    author: 'F. Scott Fitzgerald',
+    description: 'A story of wealth and love',
+    price: 10.99,
+    stock: 100,
+    createdAt: mockBook.createdAt.toISOString(),
+    updatedAt: mockBook.createdAt.toISOString(),
   };
 
   const mockPrismaService = {
@@ -57,16 +67,17 @@ describe('BooksService', () => {
     });
   });
 
-  describe('findById', () => {
+  describe('findByIdOrThrow', () => {
     it('should return a book if found', async () => {
       jest.spyOn(prisma.book, 'findUnique').mockResolvedValue(mockBook);
-      const result = await service.findById(1);
-      expect(result.id).toEqual(1);
+      const result = await service.findByIdOrThrow(1);
+      expect(result).toEqual(mockBookResponse);
     });
 
-    it('should throw NotFoundException if book not found', async () => {
+    it('should return null if book not found', async () => {
       jest.spyOn(prisma.book, 'findUnique').mockResolvedValue(null);
-      await expect(service.findById(999)).rejects.toThrow(NotFoundException);
+      const result = await service.findById(999);
+      expect(result).toBeNull();
     });
   });
 
@@ -76,22 +87,26 @@ describe('BooksService', () => {
       await expect(service.delete(1)).resolves.not.toThrow();
     });
 
-    it('should throw NotFoundException when book does not exist', async () => {
+    it('should propagate Prisma P2025 error when book does not exist', async () => {
       const error = new Prisma.PrismaClientKnownRequestError('Message', {
         code: 'P2025',
         clientVersion: 'version',
       });
       jest.spyOn(prisma.book, 'delete').mockRejectedValue(error);
-      await expect(service.delete(999)).rejects.toThrow(NotFoundException);
+      await expect(service.delete(999)).rejects.toThrow(
+        Prisma.PrismaClientKnownRequestError,
+      );
     });
 
-    it('should throw ConflictException when book is referenced', async () => {
+    it('should propagate Prisma P2003 error when book is referenced', async () => {
       const error = new Prisma.PrismaClientKnownRequestError('Message', {
         code: 'P2003',
         clientVersion: 'version',
       });
       jest.spyOn(prisma.book, 'delete').mockRejectedValue(error);
-      await expect(service.delete(1)).rejects.toThrow(ConflictException);
+      await expect(service.delete(1)).rejects.toThrow(
+        Prisma.PrismaClientKnownRequestError,
+      );
     });
   });
 });

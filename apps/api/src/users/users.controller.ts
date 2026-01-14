@@ -53,7 +53,7 @@ export class UsersController {
   @ApiOkResponse({ type: UserResponse })
   @ApiNotFoundResponse({ type: ApiError, description: 'User not found' })
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UserResponse> {
-    return this.usersService.findByIdOrThrow(+id);
+    return this.usersService.findByIdOrThrow(id);
   }
 
   @Patch(':id')

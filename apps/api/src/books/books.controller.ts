@@ -37,7 +37,6 @@ export class BooksController {
   @Post()
   @UsePipes(new ZodValidationPipe(CreateBookRequestSchema))
   @ApiCreatedResponse({ type: BookResponse })
-  @ApiOkResponse({ type: BookResponse })
   async addBook(@Body() bookRequest: CreateBookRequest): Promise<BookResponse> {
     return this.booksService.create(bookRequest);
   }
@@ -52,10 +51,8 @@ export class BooksController {
   @ApiParam({ name: 'id', type: Number })
   @ApiOkResponse({ type: BookResponse })
   @ApiNotFoundResponse({ type: ApiError, description: 'Book not found' })
-  async getBookById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<BookResponse> {
-    return this.booksService.findById(id);
+  async getById(@Param('id', ParseIntPipe) id: number): Promise<BookResponse> {
+    return this.booksService.findByIdOrThrow(id);
   }
 
   @Patch(':id')
