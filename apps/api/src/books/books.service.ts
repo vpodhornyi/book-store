@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, type Book } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
-  type BookResponse,
-  type CreateBookRequest,
-  type UpdateBookRequest,
-} from '@repo/contracts';
+  BookResponse,
+  CreateBookRequest,
+  UpdateBookRequest,
+} from './dto/books.dto';
 import {
   toBookResponse,
   toBookCreateData,

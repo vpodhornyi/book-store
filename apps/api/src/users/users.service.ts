@@ -6,7 +6,7 @@ import type {
   UserResponse,
   CreateUserRequest,
   UpdateUserRequest,
-} from '@repo/contracts';
+} from './dto/users.dto';
 
 @Injectable()
 export class UsersService {

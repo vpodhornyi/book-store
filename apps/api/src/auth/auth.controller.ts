@@ -15,10 +15,10 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import {
   AuthResponse,
   LoginRequest,
-  LoginRequestSchema,
   RegisterRequest,
-  RegisterRequestSchema,
-} from '@repo/contracts';
+  RefreshResponse,
+} from './dto/auth.dto';
+import { LoginRequestSchema, RegisterRequestSchema } from '@repo/contracts';
 import { AuthService } from './auth.service';
 import { SessionMeta } from '../types/session-meta.type';
 import { ApiOkResponse, ApiCookieAuth } from '@nestjs/swagger';
@@ -75,17 +75,14 @@ export class AuthController {
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthResponse> {
+  ): Promise<RefreshResponse> {
     const refreshToken = req.cookies?.refreshToken as string | undefined;
     const metaData: SessionMeta = this.getMeta(req);
-    const {
-      accessToken,
-      refreshToken: newRefreshToken,
-      user,
-    } = await this.authService.refresh(refreshToken, metaData);
+    const { accessToken, refreshToken: newRefreshToken } =
+      await this.authService.refresh(refreshToken, metaData);
     this.setCookie(res, newRefreshToken);
 
-    return { accessToken, user };
+    return { accessToken };
   }
 
   @UseGuards(JwtAuthGuard)

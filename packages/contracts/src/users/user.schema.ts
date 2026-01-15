@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 
 import { BaseEntityResponseSchema } from '../common/base.schema';
 
@@ -20,6 +19,6 @@ export const UpdateUserRequestSchema = z.object({
   password: z.string().min(8).max(72).optional(),
 })
 
-export class UserResponse extends createZodDto(UserResponseSchema) {}
-export class CreateUserRequest extends createZodDto(CreateUserRequestSchema) {}
-export class UpdateUserRequest extends createZodDto(UpdateUserRequestSchema) {}
+export type UserResponse = z.infer<typeof UserResponseSchema>
+export type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>
+export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>
