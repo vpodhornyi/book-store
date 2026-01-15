@@ -10,6 +10,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import type { Response, Request } from 'express';
+import { UnauthorizedException } from '@nestjs/common';
 
 import { JwtAuthGuard } from './jwt-auth.guard';
 import {
@@ -18,19 +19,28 @@ import {
   RegisterRequest,
   RefreshResponse,
 } from './dto/auth.dto';
+import { UserResponse } from '../users/dto/users.dto';
 import { LoginRequestSchema, RegisterRequestSchema } from '@repo/contracts';
 import { AuthService } from './auth.service';
 import { SessionMeta } from '../types/session-meta.type';
 import { ApiOkResponse, ApiCookieAuth } from '@nestjs/swagger';
+import { UsersService } from '../users/users.service';
+import type { AuthRequest } from '../types/auth-request';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getProfile(@Req() req: Request) {
-    return req.user;
+  async getProfile(@Req() req: AuthRequest): Promise<UserResponse> {
+    const id: number = req.user.userId;
+    if (!id) throw new UnauthorizedException('Invalid token');
+
+    return await this.userService.findByIdOrThrow(id);
   }
 
   @Post('register')

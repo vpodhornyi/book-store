@@ -7,7 +7,7 @@ import {
   type LoginRequest,
   type UserResponse,
   type AuthResponse,
-  type RefreshResponse,
+  type RefreshResponse, UserResponseSchema,
 } from "@repo/contracts";
 
 import { apiFetch } from "@/lib/api/http";
@@ -67,9 +67,9 @@ export const authService = {
     const { data, response } = await apiFetch("/auth/me", { method: "GET" });
     if (!response.ok) return null;
 
-    const parsed: { user: UserResponse } = AuthResponseSchema.pick({ user: true }).parse(data);
-    authStore.setUser(parsed.user);
-    return parsed.user;
+    const user: UserResponse = UserResponseSchema.parse(data);
+    authStore.setUser(user);
+    return user;
   },
 
   async logout() {
