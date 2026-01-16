@@ -1,10 +1,13 @@
+"use client";
+
+import Link from "next/link";
 import { ThemeToggle } from "../shared/ThemeToggle";
 import { BookMark, KorbIcon, Logo } from "../ui/icons";
 import UserLink from '@/components/features/UserLink';
 
-import Link from "next/link";
 
 export default function Header() {
+
   return (
     <header className="sticky top-0 z-50 w-full  backdrop-blur transition-colors duration-300  ">
       <div

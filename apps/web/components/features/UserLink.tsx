@@ -13,7 +13,7 @@ export default function UserLink() {
         isLoading ? <Loader/> :
           user ?
             <div className="
-             shadow-[8px_8px_0px_0px_#F9784B]
+             shadow-[5px_5px_0px_0px_#F9784B]
              hover:shadow-[3px_3px_0px_0px_#F9784B]
              hover:translate-x-0.5
              hover:translate-y-0.5
@@ -21,7 +21,7 @@ export default function UserLink() {
              border-2
              hover:text-blue-500
              rounded-xl cursor-pointer flex items-center justify-center hover:blue-500">
-              <User className="mr-15 h-4.5 w-4.5 md:h-6 md:w-6 "/>
+              <User className="mr-10 h-4.5 w-4.5 md:h-6 md:w-6 "/>
               <CaretDownIcon className="h-3 w-3 md:h-4 md:w-4"/>
             </div>
             :
