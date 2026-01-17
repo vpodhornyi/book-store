@@ -26,9 +26,12 @@ import { SessionMeta } from '../types/session-meta.type';
 import { ApiOkResponse, ApiCookieAuth } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import type { AuthRequest } from '../types/auth-request';
+import { AUTH_COOKIE } from '../common/constants';
 
 @Controller('auth')
 export class AuthController {
+  private readonly cookiePath: string = '/';
+
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,
@@ -81,7 +84,7 @@ export class AuthController {
 
   @Post('refresh')
   @ApiOkResponse({ type: AuthResponse })
-  @ApiCookieAuth('refreshToken')
+  @ApiCookieAuth(AUTH_COOKIE.REFRESH)
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
@@ -97,15 +100,15 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  @ApiCookieAuth('refreshToken')
+  @ApiCookieAuth(AUTH_COOKIE.REFRESH)
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ ok: true }> {
     const refreshToken = req.cookies?.refreshToken as string | undefined;
     await this.authService.logout(refreshToken);
-    res.clearCookie('refreshToken', {
-      path: '/api/auth/refresh',
+    res.clearCookie(AUTH_COOKIE.REFRESH, {
+      path: AUTH_COOKIE.PATH,
     });
 
     return { ok: true };
@@ -122,11 +125,11 @@ export class AuthController {
   }
 
   private setCookie(res: Response, token: string): void {
-    res.cookie('refreshToken', token, {
+    res.cookie(AUTH_COOKIE.REFRESH, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/api/auth/refresh',
+      path: AUTH_COOKIE.PATH,
     });
   }
 }

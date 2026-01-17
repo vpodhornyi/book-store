@@ -40,8 +40,9 @@ export default function LoginForm() {
     try {
       const res = await authService.login(parsed.data);
       setUser(res.user);
-      router.back();
+      router.replace('/profile');
     } catch (err) {
+      console.log(err);
       setError(err instanceof Error ? err.message : "Login failed");
       hideError();
     } finally {

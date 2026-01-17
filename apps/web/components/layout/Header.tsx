@@ -19,8 +19,6 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-1 md:gap-4">
-          <UserLink/>
-
           <ThemeToggle/>
 
           <Link
@@ -33,6 +31,7 @@ export default function Header() {
           <button className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-lg hover:text-blue-500  ">
             <KorbIcon className="h-[18px] w-[18px] md:h-6 md:w-6"/>
           </button>
+          <UserLink/>
         </div>
       </div>
     </header>

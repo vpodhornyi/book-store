@@ -7,7 +7,7 @@ import { AuthProvider } from "@/providers/auth-provider";
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  overlay?: React.ReactNode;
+  overlay: React.ReactNode;
 }
 
 export default function RootLayout({ children, overlay }: RootLayoutProps ) {

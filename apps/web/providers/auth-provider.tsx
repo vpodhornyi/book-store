@@ -50,8 +50,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [setUser]);
 
   const logout = useCallback(async () => {
-    await authService.logout();
-    setUser(null);
+    try {
+      await authService.logout();
+    } finally {
+      authStore.clearAuth();
+      setUser(null);
+    }
   }, [setUser]);
 
   useEffect(() => {

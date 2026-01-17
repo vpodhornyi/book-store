@@ -7,7 +7,9 @@ import {
   type LoginRequest,
   type UserResponse,
   type AuthResponse,
-  type RefreshResponse, UserResponseSchema,
+  type RefreshResponse,
+  UserResponseSchema,
+  apiErrorMessage
 } from "@repo/contracts";
 
 import { apiFetch } from "@/lib/api/http";
@@ -42,8 +44,8 @@ export const authService = {
       skipAuthRefresh: true,
     });
 
+    if (!response.ok) throw new Error(apiErrorMessage(data));
     const parsed: AuthResponse = AuthResponseSchema.parse(data);
-    if (!response.ok) throw new Error("Login failed");
 
     authStore.setAccessToken(parsed.accessToken);
     authStore.setUser(parsed.user);
