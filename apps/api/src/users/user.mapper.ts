@@ -3,7 +3,7 @@ import type {
   UserResponse,
   CreateUserRequest,
   UpdateUserRequest,
-} from '@repo/contracts';
+} from './dto/users.dto';
 import { PasswordUtil } from '../common/util/PasswordUtil';
 
 export class UserMapper {

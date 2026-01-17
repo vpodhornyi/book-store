@@ -37,6 +37,47 @@ export const Logo = ({ className }: IconProps) => {
   );
 };
 
+export const Loader = ({ className, size = 20 }: { className?: string, size?: number }) => (
+  <svg
+    className={`animate-spin ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M20 10C20 12.3136 19.1978 14.5555 17.7301 16.3439C16.2624 18.1323 14.22 19.3565 11.9509 19.8079C9.6818 20.2592 7.3264 19.9098 5.28603 18.8192C3.24566 17.7286 1.64656 15.9643 0.761205 13.8268C-0.124154 11.6894 -0.240992 9.31109 0.430596 7.09715C1.10219 4.88322 2.52065 2.97065 4.4443 1.6853C6.36795 0.399963 8.67776 -0.178615 10.9802 0.0481526C13.2826 0.27492 15.4351 1.293 17.0711 2.92893L15.9377 4.06233C14.564 2.68861 12.7564 1.83372 10.8231 1.6433C8.8897 1.45288 6.95011 1.93872 5.3348 3.01804C3.71949 4.09735 2.52838 5.70337 1.96444 7.56244C1.4005 9.42151 1.49861 11.4186 2.24206 13.2134C2.9855 15.0083 4.32829 16.4898 6.04162 17.4056C7.75495 18.3214 9.73281 18.6148 11.6382 18.2358C13.5436 17.8568 15.2586 16.8288 16.4911 15.3271C17.7235 13.8253 18.3971 11.9427 18.3971 10H20Z"
+      fill="#3D3C3C"/>
+  </svg>
+)
+
+export const CaretDownIcon = ({ className }: IconProps) => (
+  <svg
+    className={className}
+    width="17"
+    height="9"
+    viewBox="0 0 17 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.75 0.75L8.25 8.25L0.75 0.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+          strokeLinejoin="round"/>
+  </svg>
+)
+
+export const User = ({ className }: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 256 256"
+    className={className}
+  >
+    <rect width="256" height="256" fill="none"/>
+    <circle cx="128" cy="96" r="64" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
+            strokeWidth="16"/>
+    <path d="M32,216c19.37-33.47,54.55-56,96-56s76.63,22.53,96,56" fill="none" stroke="currentColor"
+          strokeLinecap="round" strokeLinejoin="round" strokeWidth="16"/>
+  </svg>
+)
+
 export const SunIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -48,15 +89,15 @@ export const SunIcon = ({ className }: IconProps) => (
     strokeLinejoin="round"
     className={className}
   >
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2" />
-    <path d="M12 20v2" />
-    <path d="M4.93 4.93l1.41 1.41" />
-    <path d="M17.66 17.66l1.41 1.41" />
-    <path d="M2 12h2" />
-    <path d="M20 12h2" />
-    <path d="M6.34 17.66l-1.41 1.41" />
-    <path d="M19.07 4.93l-1.41 1.41" />
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2"/>
+    <path d="M12 20v2"/>
+    <path d="M4.93 4.93l1.41 1.41"/>
+    <path d="M17.66 17.66l1.41 1.41"/>
+    <path d="M2 12h2"/>
+    <path d="M20 12h2"/>
+    <path d="M6.34 17.66l-1.41 1.41"/>
+    <path d="M19.07 4.93l-1.41 1.41"/>
   </svg>
 );
 
@@ -71,7 +112,7 @@ export const MoonIcon = ({ className }: IconProps) => (
     strokeLinejoin="round"
     className={className}
   >
-    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
   </svg>
 );
 

@@ -12,6 +12,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: process.env.NODE_ENV === 'production',
   });
+  app.enableCors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  });
   app.use(cookieParser());
   app.setGlobalPrefix('api');
   app.useLogger(app.get(Logger));

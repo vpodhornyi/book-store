@@ -2,7 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { PasswordUtil } from '../common/util/PasswordUtil';
 import { User } from '@prisma/client';
-import { LoginRequest, RegisterRequest, UserResponse } from '@repo/contracts';
+import { LoginRequest, RegisterRequest } from './dto/auth.dto';
+import { UserResponse } from '../users/dto/users.dto';
 import { UserMapper } from '../users/user.mapper';
 import { SessionMeta } from '../types/session-meta.type';
 import { UsersService } from '../users/users.service';
@@ -83,7 +84,6 @@ export class AuthService {
   ): Promise<{
     accessToken: string;
     refreshToken: string;
-    user: UserResponse;
   }> {
     if (!refreshToken) throw new UnauthorizedException('No refresh token!');
 
@@ -99,7 +99,6 @@ export class AuthService {
     return {
       accessToken,
       refreshToken: newRefreshToken,
-      user: UserMapper.toResponse(user),
     };
   }
 

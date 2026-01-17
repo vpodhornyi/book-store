@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { createZodDto } from 'nestjs-zod';
 
 import {BaseEntityResponseSchema} from "../common/base.schema";
 
@@ -27,7 +26,6 @@ export const UpdateBookRequestSchema = z.object({
   stock: z.number().int().nonnegative().optional(),
 })
 
-export class BookResponse extends createZodDto(BookResponseSchema) {}
-export class CreateBookRequest extends createZodDto(CreateBookRequestSchema) {}
-export class UpdateBookRequest extends createZodDto(UpdateBookRequestSchema) {}
-
+export type BookResponse = z.infer<typeof BookResponseSchema>;
+export type CreateBookRequest = z.infer<typeof CreateBookRequestSchema>;
+export type UpdateBookRequest = z.infer<typeof UpdateBookRequestSchema>;

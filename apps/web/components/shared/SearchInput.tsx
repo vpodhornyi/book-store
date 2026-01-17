@@ -29,7 +29,8 @@ export const SearchInput = ({
           shadow-[8px_8px_0px_0px_#FFC107]
           outline-none
           transition-all
-          focus:translate-x-[2px] focus:translate-y-[2px]
+          focus:translate-x-[2px]
+          focus:translate-y-[2px]
           focus:shadow-[3px_3px_0px_0px_#FFC107]
           placeholder:text-gray-400
           placeholder:text-[14px]
