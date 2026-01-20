@@ -21,10 +21,12 @@ import {
 import { UsersService } from './users.service';
 import {
   CreateUserRequest,
-  CreateUserRequestSchema,
   UpdateUserRequest,
   UserResponse,
-  ApiError,
+} from './dto/users.dto';
+import { ApiError } from '../common/dto/api-error.dto';
+import {
+  CreateUserRequestSchema,
   UpdateUserRequestSchema,
 } from '@repo/contracts';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';

@@ -1,9 +1,6 @@
 import { Prisma, type Book } from '@prisma/client';
-import {
-  BookResponse,
-  BookResponseSchema,
-  CreateBookRequest,
-} from '@repo/contracts';
+import { BookResponseSchema } from '@repo/contracts';
+import { BookResponse, CreateBookRequest } from './dto/books.dto';
 import { type UpdateBookRequest } from '@repo/contracts';
 
 type BookUpdateData = {

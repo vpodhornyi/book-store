@@ -54,6 +54,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
           return HttpStatus.BAD_REQUEST;
       }
     }
+
+    if (exception instanceof ZodValidationException) {
+      return HttpStatus.UNPROCESSABLE_ENTITY;
+    }
+
     return HttpStatus.INTERNAL_SERVER_ERROR;
   }
 

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
 import { UserResponseSchema } from '../users/user.schema';
 
 export const RegisterRequestSchema = z.object({
@@ -17,11 +16,11 @@ export const AuthResponseSchema = z.object({
   user: UserResponseSchema,
 })
 
-export const RefreshTokenRequestSchema = z.object({
-  refreshToken: z.string(),
+export const RefreshResponseSchema = z.object({
+  accessToken: z.string(),
 })
 
-export class RegisterRequest extends createZodDto(RegisterRequestSchema) {}
-export class LoginRequest extends createZodDto(LoginRequestSchema) {}
-export class AuthResponse extends createZodDto(AuthResponseSchema) {}
-export class RefreshTokenRequest extends createZodDto(RefreshTokenRequestSchema) {}
+export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
+export type LoginRequest = z.infer<typeof LoginRequestSchema>;
+export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+export type RefreshResponse = z.infer<typeof RefreshResponseSchema>;

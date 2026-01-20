@@ -10,27 +10,40 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import type { Response, Request } from 'express';
+import { UnauthorizedException } from '@nestjs/common';
 
 import { JwtAuthGuard } from './jwt-auth.guard';
 import {
   AuthResponse,
   LoginRequest,
-  LoginRequestSchema,
   RegisterRequest,
-  RegisterRequestSchema,
-} from '@repo/contracts';
+  RefreshResponse,
+} from './dto/auth.dto';
+import { UserResponse } from '../users/dto/users.dto';
+import { LoginRequestSchema, RegisterRequestSchema } from '@repo/contracts';
 import { AuthService } from './auth.service';
 import { SessionMeta } from '../types/session-meta.type';
 import { ApiOkResponse, ApiCookieAuth } from '@nestjs/swagger';
+import { UsersService } from '../users/users.service';
+import type { AuthRequest } from '../types/auth-request';
+import { AUTH_COOKIE } from '../common/constants';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  private readonly cookiePath: string = '/';
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getProfile(@Req() req: Request) {
-    return req.user;
+  async getProfile(@Req() req: AuthRequest): Promise<UserResponse> {
+    const id: number = req.user.userId;
+    if (!id) throw new UnauthorizedException('Invalid token');
+
+    return await this.userService.findByIdOrThrow(id);
   }
 
   @Post('register')
@@ -71,34 +84,31 @@ export class AuthController {
 
   @Post('refresh')
   @ApiOkResponse({ type: AuthResponse })
-  @ApiCookieAuth('refreshToken')
+  @ApiCookieAuth(AUTH_COOKIE.REFRESH)
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthResponse> {
+  ): Promise<RefreshResponse> {
     const refreshToken = req.cookies?.refreshToken as string | undefined;
     const metaData: SessionMeta = this.getMeta(req);
-    const {
-      accessToken,
-      refreshToken: newRefreshToken,
-      user,
-    } = await this.authService.refresh(refreshToken, metaData);
+    const { accessToken, refreshToken: newRefreshToken } =
+      await this.authService.refresh(refreshToken, metaData);
     this.setCookie(res, newRefreshToken);
 
-    return { accessToken, user };
+    return { accessToken };
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  @ApiCookieAuth('refreshToken')
+  @ApiCookieAuth(AUTH_COOKIE.REFRESH)
   async logout(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ ok: true }> {
     const refreshToken = req.cookies?.refreshToken as string | undefined;
     await this.authService.logout(refreshToken);
-    res.clearCookie('refreshToken', {
-      path: '/api/auth/refresh',
+    res.clearCookie(AUTH_COOKIE.REFRESH, {
+      path: AUTH_COOKIE.PATH,
     });
 
     return { ok: true };
@@ -115,11 +125,11 @@ export class AuthController {
   }
 
   private setCookie(res: Response, token: string): void {
-    res.cookie('refreshToken', token, {
+    res.cookie(AUTH_COOKIE.REFRESH, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      path: '/api/auth/refresh',
+      path: AUTH_COOKIE.PATH,
     });
   }
 }

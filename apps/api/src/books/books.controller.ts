@@ -21,13 +21,15 @@ import {
 } from '@nestjs/swagger';
 import { BooksService } from './books.service';
 import {
+  CreateBookRequestSchema,
+  UpdateBookRequestSchema,
+} from '@repo/contracts';
+import {
   BookResponse,
   CreateBookRequest,
   UpdateBookRequest,
-  CreateBookRequestSchema,
-  UpdateBookRequestSchema,
-  ApiError,
-} from '@repo/contracts';
+} from './dto/books.dto';
+import { ApiError } from '../common/dto/api-error.dto';
 import { ZodValidationPipe } from '../common/zod-validation.pipe';
 
 @Controller('books')
