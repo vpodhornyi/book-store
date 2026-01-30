@@ -7,7 +7,7 @@ const Hero = () => {
   return (
     <section className="b-2 border-gray-600 border-dashed">
       <div
-        className="flex flex-col min-[1200px]:flex-row items-start min-[1200px]:items-center min-[1200px]:gap-[clamp(50px,10vw,250px)] relative">
+        className="flex flex-col min-[1200px]:flex-row items-center min-[1200px]:items-start  min-[1200px]:gap-[clamp(50px,10vw,250px)] relative mx-auto">
         <div className="flex flex-col items-center md:items-start relative">
           <div className="">
             <h1 className="font-syne text-[36px] md:text-[64px] text-gray-800 dark:text-gray-100 md:w-125 w-67.75 ">
